@@ -10,7 +10,6 @@ use Ramsey\Uuid\UuidInterface;
 
 final class DoctrineLeagueRepository implements LeagueRepositoryInterface
 {
-
     public function get(UuidInterface $uuid): League
     {
         // TODO: Implement get() method.

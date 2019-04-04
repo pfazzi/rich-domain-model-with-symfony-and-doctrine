@@ -8,20 +8,20 @@ use Ramsey\Uuid\UuidInterface;
 final class League
 {
     /** @var UuidInterface */
-    private $id;
+    private $uuid;
 
     /** @var Name */
     private $name;
 
-    public function __construct(UuidInterface $id, Name $name)
+    public function __construct(UuidInterface $uuid, Name $name)
     {
-        $this->id   = $id;
+        $this->uuid = $uuid;
         $this->name = $name;
     }
 
     public function id(): UuidInterface
     {
-        return $this->id;
+        return $this->uuid;
     }
 
     public function name(): Name
