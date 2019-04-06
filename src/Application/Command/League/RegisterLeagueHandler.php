@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Application\League;
+namespace App\Application\Command\League;
 
 use App\Domain\League\League;
 use App\Domain\League\LeagueRepositoryInterface;
