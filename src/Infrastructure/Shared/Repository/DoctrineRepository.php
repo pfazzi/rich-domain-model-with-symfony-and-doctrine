@@ -60,4 +60,9 @@ abstract class DoctrineRepository
     {
         return $this->repository;
     }
+
+    protected function getEntityManager(): EntityManagerInterface
+    {
+        return $this->entityManager;
+    }
 }

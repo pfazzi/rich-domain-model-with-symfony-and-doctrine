@@ -8,7 +8,10 @@ parameters:
 services:
     _defaults:
         autowire: true
-        autoconfigure: false
+        autoconfigure: true
+        bind:
+            $queryBus: '@tactician.commandbus.query'
+            $commandBus: '@tactician.commandbus.command'
 
     App\:
         resource: '../src/'
@@ -18,7 +21,16 @@ services:
         resource: '../src/Application/Command'
         exclude: '../src/Application/Command/**/*Command.php'
         tags:
-            - { name: tactician.handler, typehints: true }
+            - { name: tactician.handler, typehints: true, bus: command }
+
+    App\Application\Query\:
+        resource: '../src/Application/Query'
+        exclude: '../src/Application/Query/**/*Query.php'
+        tags:
+            - { name: tactician.handler, typehints: true, bus: query }
+
+    App\UI\Http\Rest\:
+        resource: '../src/UI/Http/Rest/'
 
     App\UI\Http\Rest\Controller\:
         resource: '../src/UI/Http/Rest/Controller'

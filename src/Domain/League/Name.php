@@ -12,7 +12,7 @@ final class Name
 
     private function __construct($value)
     {
-        Assertion::maxLength(30, $value, 'A Name is suppose to be at most 30 letters.');
+        Assertion::maxLength($value, 30, 'A Name is suppose to be at most 30 letters.');
 
         $this->value = $value;
     }

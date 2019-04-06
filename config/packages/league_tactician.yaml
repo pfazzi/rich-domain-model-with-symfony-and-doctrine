@@ -1,13 +1,18 @@
 # Library documentation: http://tactician.thephpleague.com/
 # Bundle documentation: https://github.com/thephpleague/tactician-bundle/blob/v1.0/README.md
 tactician:
+    default_bus: command
+    method_inflector: tactician.handler.method_name_inflector.invoke
     commandbus:
-        default:
+        command:
             middleware:
                 # https://github.com/thephpleague/tactician-bundle/tree/v1.0#validator-middleware-tacticianmiddlewarevalidator
-                - tactician.middleware.validator
+                # - tactician.middleware.validator
                 # http://tactician.thephpleague.com/plugins/locking-middleware/
                 - tactician.middleware.locking
                 # https://github.com/thephpleague/tactician-doctrine
                 - tactician.middleware.doctrine
-                - tactician.middleware.command_handler
+                - tactician.commandbus.command.middleware.command_handler
+        query:
+            middleware:
+                - tactician.commandbus.query.middleware.command_handler

@@ -6,11 +6,14 @@ namespace App\Infrastructure\League\Repository;
 
 use App\Domain\League\League;
 use App\Domain\League\LeagueRepositoryInterface;
+use App\Domain\League\Query\LeagueViewInterface;
+use App\Domain\League\Query\LeagueViewRepositoryInterface;
+use App\Infrastructure\League\Query\LeagueView;
 use App\Infrastructure\Shared\Repository\DoctrineRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Ramsey\Uuid\UuidInterface;
 
-final class DoctrineLeagueRepository extends DoctrineRepository implements LeagueRepositoryInterface
+final class DoctrineLeagueRepository extends DoctrineRepository implements LeagueRepositoryInterface, LeagueViewRepositoryInterface
 {
     public function __construct(EntityManagerInterface $entityManager)
     {
@@ -21,6 +24,7 @@ final class DoctrineLeagueRepository extends DoctrineRepository implements Leagu
      * @param UuidInterface $uuid
      *
      * @return League
+     *
      * @throws \App\Domain\Shared\Exception\NotFoundException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
@@ -39,5 +43,30 @@ final class DoctrineLeagueRepository extends DoctrineRepository implements Leagu
     public function store(League $user): void
     {
         $this->register($user);
+    }
+
+    /**
+     * @param UuidInterface $uuid
+     *
+     * @return LeagueViewInterface
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function oneByUuid(UuidInterface $uuid): LeagueViewInterface
+    {
+        $qb = $this
+            ->getEntityManager()
+            ->createQueryBuilder();
+
+        $viewClass = LeagueView::class;
+
+        $qb
+            ->select("NEW {$viewClass}(l.uuid, l.name.value)")
+            ->from(League::class, 'l')
+            ->where('l.uuid = :uuid')
+            ->setParameter('uuid', $uuid->toString())
+        ;
+
+        return $qb->getQuery()->getSingleResult();
     }
 }

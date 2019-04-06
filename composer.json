@@ -7,7 +7,6 @@
         "ext-iconv": "*",
         "beberlei/assert": "^3.2",
         "doctrine/annotations": "^1.6",
-        "friendsofsymfony/rest-bundle": "^2.5",
         "jms/serializer-bundle": "^3.2",
         "league/tactician-bundle": "^1.1",
         "league/tactician-doctrine": "^1.1",
@@ -20,7 +19,8 @@
         "symfony/framework-bundle": "4.2.*",
         "symfony/orm-pack": "^1.0",
         "symfony/validator": "4.2.*",
-        "symfony/yaml": "4.2.*"
+        "symfony/yaml": "4.2.*",
+        "ext-json": "*"
     },
     "config": {
         "preferred-install": {

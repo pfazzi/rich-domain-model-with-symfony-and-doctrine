@@ -7,36 +7,38 @@ namespace App\Application\Command\League;
 use App\Domain\League\Name;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 
 final class RegisterLeagueCommand
 {
     /**
-     * @var string
-     * @Assert\Uuid()
-     * @Assert\NotBlank()
+     * @var UuidInterface
      */
     private $uuid;
 
     /**
-     * @var string
-     * @Assert\NotBlank()
+     * @var Name
      */
     private $name;
 
+    /**
+     * RegisterLeagueCommand constructor.
+     *
+     * @param string $uuid
+     * @param string $name
+     */
     public function __construct(string $uuid, string $name)
     {
-        $this->uuid = $uuid;
-        $this->name = $name;
+        $this->uuid = Uuid::fromString($uuid);
+        $this->name = Name::fromString($name);
     }
 
     public function uuid(): UuidInterface
     {
-        return Uuid::fromString($this->uuid);
+        return $this->uuid;
     }
 
     public function name(): Name
     {
-        return Name::fromString($this->name);
+        return $this->name;
     }
 }

@@ -5,30 +5,55 @@ declare(strict_types=1);
 namespace App\UI\Http\Rest\Controller;
 
 use App\Application\Command\League\RegisterLeagueCommand;
+use App\Application\Query\League\FindByUuidQuery;
+use Assert\Assertion;
 use League\Tactician\CommandBus;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 final class LeagueController
 {
     /** @var CommandBus */
     private $commandBus;
+    /**
+     * @var CommandBus
+     */
+    private $queryBus;
 
-    public function __construct(CommandBus $commandBus)
+    public function __construct(CommandBus $commandBus, CommandBus $queryBus)
     {
         $this->commandBus = $commandBus;
+        $this->queryBus = $queryBus;
     }
 
     /**
      * @Route(path="/api/leagues", methods={"POST"}, name="league_register")
-     * @ParamConverter("command", converter="fos_rest.request_body")
      */
-    public function registerLeagueAction(RegisterLeagueCommand $command): JsonResponse
+    public function registerLeagueAction(Request $request): JsonResponse
     {
-        $this->commandBus->handle($command);
+        Assertion::uuid($uuid = $request->get('uuid'));
+        Assertion::notBlank($name = $request->get('name'));
 
-        return JsonResponse::create(['result' => 'OK']);
+        $this->commandBus->handle(new RegisterLeagueCommand(
+            $uuid,
+            $name
+        ));
+
+        return JsonResponse::create(
+            $this->queryBus->handle(new FindByUuidQuery($uuid))
+        );
+    }
+
+    /**
+     * @Route(path="/api/leagues/{uuid}", methods={"GET"}, name="league_find_one_by_uuid")
+     */
+    public function findOneLeagueByUuidAction(Request $request): JsonResponse
+    {
+        Assertion::uuid($uuid = $request->get('uuid'));
+
+        return JsonResponse::create(
+            $this->queryBus->handle(new FindByUuidQuery($uuid))
+        );
     }
 }
