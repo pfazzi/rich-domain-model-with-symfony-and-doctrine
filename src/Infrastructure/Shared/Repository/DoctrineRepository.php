@@ -1,24 +1,36 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Infrastructure\Shared\Repository;
 
-
-use App\Domain\Shared\Query\Exception\NotFoundException;
+use App\Domain\Shared\Exception\NotFoundException;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\QueryBuilder;
 
-final class DoctrineRepository
+abstract class DoctrineRepository
 {
-    public function register($model): void
+    /** @var string */
+    private $class;
+
+    /** @var EntityRepository */
+    private $repository;
+
+    /** @var EntityManagerInterface */
+    private $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager, string $entityClass)
     {
-        $this->entityManager->persist($model);
-        $this->apply();
+        $this->class = $entityClass;
+        $this->entityManager = $entityManager;
+        $this->repository = $this->entityManager->getRepository($this->class);
     }
 
-    public function apply(): void
+    protected function register(object $model): void
     {
+        $this->entityManager->persist($model);
         $this->entityManager->flush();
     }
 
@@ -26,8 +38,9 @@ final class DoctrineRepository
      * @param QueryBuilder $queryBuilder
      *
      * @return mixed
+     *
      * @throws NotFoundException
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     protected function oneOrException(QueryBuilder $queryBuilder)
     {
@@ -43,27 +56,8 @@ final class DoctrineRepository
         return $model;
     }
 
-    private function setRepository(string $model): void
+    protected function getRepository(): EntityRepository
     {
-        /** @var EntityRepository $objectRepository */
-        $objectRepository = $this->entityManager->getRepository($model);
-        $this->repository = $objectRepository;
+        return $this->repository;
     }
-
-    public function __construct(EntityManagerInterface $entityManager)
-    {
-        $this->entityManager = $entityManager;
-        $this->setRepository($this->class);
-    }
-
-    /** @var string */
-    protected $class;
-
-    /** @var EntityRepository */
-    protected $repository;
-
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
 }
