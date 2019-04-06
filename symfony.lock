@@ -111,6 +111,30 @@
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
     },
+    "league/tactician": {
+        "version": "v1.0.3"
+    },
+    "league/tactician-bundle": {
+        "version": "1.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "1.0",
+            "ref": "222c3d39d38378bc6a9790a0b5baf841ba6679b9"
+        },
+        "files": [
+            "config/packages/league_tactician.yaml"
+        ]
+    },
+    "league/tactician-container": {
+        "version": "2.0.0"
+    },
+    "league/tactician-doctrine": {
+        "version": "v1.1.1"
+    },
+    "league/tactician-logger": {
+        "version": "v0.10.0"
+    },
     "ocramius/package-versions": {
         "version": "1.4.0"
     },
@@ -277,6 +301,18 @@
     },
     "symfony/stopwatch": {
         "version": "v4.2.5"
+    },
+    "symfony/validator": {
+        "version": "4.1",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "4.1",
+            "ref": "0cdc982334f45d554957a6167e030482795bf9d7"
+        },
+        "files": [
+            "config/packages/validator.yaml"
+        ]
     },
     "symfony/var-exporter": {
         "version": "v4.2.4"
