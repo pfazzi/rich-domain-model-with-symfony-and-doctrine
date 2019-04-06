@@ -16,9 +16,8 @@ final class LeagueController
 {
     /** @var CommandBus */
     private $commandBus;
-    /**
-     * @var CommandBus
-     */
+
+    /** @var CommandBus */
     private $queryBus;
 
     public function __construct(CommandBus $commandBus, CommandBus $queryBus)
@@ -28,7 +27,7 @@ final class LeagueController
     }
 
     /**
-     * @Route(path="/api/leagues", methods={"POST"}, name="league_register")
+     * @Route(path="/api/leagues", methods={"POST"}, name="api_league_register")
      */
     public function registerLeagueAction(Request $request): JsonResponse
     {
@@ -46,7 +45,7 @@ final class LeagueController
     }
 
     /**
-     * @Route(path="/api/leagues/{uuid}", methods={"GET"}, name="league_find_one_by_uuid")
+     * @Route(path="/api/leagues/{uuid}", methods={"GET"}, name="api_league_find_one_by_uuid")
      */
     public function findOneLeagueByUuidAction(Request $request): JsonResponse
     {

@@ -35,3 +35,7 @@ services:
     App\UI\Http\Rest\Controller\:
         resource: '../src/UI/Http/Rest/Controller'
         tags: ['controller.service_arguments']
+
+    App\UI\Http\Web\Controller\:
+        resource: '../src/UI/Http/Web/Controller'
+        tags: ['controller.service_arguments']
