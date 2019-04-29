@@ -170,6 +170,9 @@
             "config/packages/prod/jms_serializer.yaml"
         ]
     },
+    "league/iso3166": {
+        "version": "2.1.2"
+    },
     "league/tactician": {
         "version": "v1.0.3"
     },

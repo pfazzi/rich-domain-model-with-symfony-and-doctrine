@@ -16,5 +16,5 @@ interface LeagueRepositoryInterface
      */
     public function get(UuidInterface $uuid): League;
 
-    public function store(League $user): void;
+    public function store(League $league): void;
 }

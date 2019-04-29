@@ -9,6 +9,7 @@
         "beberlei/assert": "^3.2",
         "doctrine/annotations": "^1.6",
         "jms/serializer-bundle": "^3.2",
+        "league/iso3166": "^2.1",
         "league/tactician-bundle": "^1.1",
         "league/tactician-doctrine": "^1.1",
         "ramsey/uuid": "^3.8",

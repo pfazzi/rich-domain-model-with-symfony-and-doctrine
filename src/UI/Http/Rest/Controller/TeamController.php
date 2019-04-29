@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace App\UI\Http\Rest\Controller;
 
-use App\Application\Command\League\RegisterLeagueCommand;
-use App\Application\Query\League\FindByUuidQuery;
+use App\Application\Command\Team\RegisterTeamCommand;
+use App\Application\Query\Team\FindByUuidQuery;
+use App\Application\Query\Team\GetAllQuery;
 use Assert\Assertion;
 use League\Tactician\CommandBus;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-final class LeagueController
+final class TeamController
 {
     /** @var CommandBus */
     private $commandBus;
@@ -27,17 +28,18 @@ final class LeagueController
     }
 
     /**
-     * @Route(path="/api/leagues", methods={"POST"}, name="api_league_register")
+     * @Route(path="/api/teams", methods={"POST"}, name="api_team_register")
      */
-    public function registerLeagueAction(Request $request): JsonResponse
+    public function registerTeamAction(Request $request): JsonResponse
     {
         Assertion::uuid($uuid = $request->get('uuid'));
         Assertion::notBlank($name = $request->get('name'));
+        Assertion::notBlank($country = $request->get('country'));
 
-        $this->commandBus->handle(new RegisterLeagueCommand(
+        $this->commandBus->handle(new RegisterTeamCommand(
             $uuid,
             $name,
-            $request->get('country')
+            $country
         ));
 
         return JsonResponse::create(
@@ -46,14 +48,24 @@ final class LeagueController
     }
 
     /**
-     * @Route(path="/api/leagues/{uuid}", methods={"GET"}, name="api_league_find_one_by_uuid")
+     * @Route(path="/api/teams/{uuid}", methods={"GET"}, name="api_team_find_one_by_uuid")
      */
-    public function findOneLeagueByUuidAction(Request $request): JsonResponse
+    public function findOneTeamByUuidAction(Request $request): JsonResponse
     {
         Assertion::uuid($uuid = $request->get('uuid'));
 
         return JsonResponse::create(
             $this->queryBus->handle(new FindByUuidQuery($uuid))
+        );
+    }
+
+    /**
+     * @Route(path="/api/teams", methods={"GET"}, name="api_get_all")
+     */
+    public function getAllAction(Request $request): JsonResponse
+    {
+        return JsonResponse::create(
+            $this->queryBus->handle(new GetAllQuery())
         );
     }
 }

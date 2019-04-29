@@ -19,7 +19,7 @@ final class RegisterLeagueHandler
 
     public function __invoke(RegisterLeagueCommand $command): void
     {
-        $league = new League($command->uuid(), $command->name());
+        $league = new League($command->uuid(), $command->name(), $command->country());
 
         $this->repository->store($league);
     }

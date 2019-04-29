@@ -24,3 +24,8 @@
 ###< friendsofphp/php-cs-fixer ###
 
 fix.php
+
+phpda
+phpda.pubkey
+phpdaconfig.yml
+phpda.svg

@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Command\League;
+namespace App\Application\Command\Team;
 
 use App\Domain\Shared\Country;
 use App\Domain\Shared\Name;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
-final class RegisterLeagueCommand
+final class RegisterTeamCommand
 {
     /**
      * @var UuidInterface
@@ -27,17 +27,17 @@ final class RegisterLeagueCommand
     private $country;
 
     /**
-     * RegisterLeagueCommand constructor.
+     * RegisterTeamCommand constructor.
      *
      * @param string $uuid
      * @param string $name
      * @param string $country
      */
-    public function __construct(string $uuid, string $name, ?string $country)
+    public function __construct(string $uuid, string $name, string $country)
     {
         $this->uuid = Uuid::fromString($uuid);
         $this->name = Name::fromString($name);
-        $this->country = null === $country ? null : Country::fromString($country);
+        $this->country = Country::fromString($country);
     }
 
     public function uuid(): UuidInterface
@@ -50,7 +50,7 @@ final class RegisterLeagueCommand
         return $this->name;
     }
 
-    public function country(): ?Country
+    public function country(): Country
     {
         return $this->country;
     }

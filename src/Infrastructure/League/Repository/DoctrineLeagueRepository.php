@@ -8,7 +8,7 @@ use App\Domain\League\League;
 use App\Domain\League\LeagueRepositoryInterface;
 use App\Domain\League\Query\LeagueViewInterface;
 use App\Domain\League\Query\LeagueViewRepositoryInterface;
-use App\Infrastructure\League\Query\LeagueView;
+use App\Infrastructure\League\Query\TeamView;
 use App\Infrastructure\Shared\Repository\DoctrineRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Ramsey\Uuid\UuidInterface;
@@ -32,17 +32,17 @@ final class DoctrineLeagueRepository extends DoctrineRepository implements Leagu
     {
         $queryBuilder = $this
             ->getRepository()
-            ->createQueryBuilder('user')
-            ->where('user.uuid = :uuid')
+            ->createQueryBuilder('l')
+            ->where('l.uuid = :uuid')
             ->setParameter('uuid', $uuid->getBytes())
         ;
 
         return $this->oneOrException($queryBuilder);
     }
 
-    public function store(League $user): void
+    public function store(League $league): void
     {
-        $this->register($user);
+        $this->register($league);
     }
 
     /**
@@ -58,7 +58,7 @@ final class DoctrineLeagueRepository extends DoctrineRepository implements Leagu
             ->getEntityManager()
             ->createQueryBuilder();
 
-        $viewClass = LeagueView::class;
+        $viewClass = TeamView::class;
 
         $qb
             ->select("NEW {$viewClass}(l.uuid, l.name.value)")

@@ -2,15 +2,16 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\League;
+namespace App\Domain\Shared;
 
 use Assert\Assertion;
 
 final class Name
 {
+    /** @var string */
     private $value;
 
-    private function __construct($value)
+    private function __construct(string $value)
     {
         Assertion::maxLength($value, 30, 'A Name is suppose to be at most 30 letters.');
 
@@ -25,5 +26,10 @@ final class Name
     public function toString(): string
     {
         return $this->value;
+    }
+
+    public function isEqual(self $other): bool
+    {
+        return $this->value === $other->value;
     }
 }
